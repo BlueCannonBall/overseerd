@@ -4,7 +4,7 @@ Freeze DiScOrD when you aren't using it.
 
 ## Motivation
 
-DiScOrD is a shitty, inefficient, slow electron app constantly robbing your system resources, even when you aren't using it. This daemon solves this (at least on Linux) by "freezing" Discord (using SIGSTOP) when its window isn't in focus.
+DiScOrD is a shitty, inefficient, slow electron app constantly robbing your system resources, even when you aren't using it. This daemon solves this (at least on Linux) by "freezing" DiScOrD (using SIGSTOP) when its window isn't in focus.
 
 ## Build & Install
 
