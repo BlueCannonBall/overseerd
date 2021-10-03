@@ -11,7 +11,6 @@ DiScOrD is a shitty, inefficient, slow electron app constantly robbing your syst
 ```
 $ make
 # make install
-
 ```
 *Note that `discordd` depends on `libxdo`.*
 *Also note that `#` represents a root shell.*
