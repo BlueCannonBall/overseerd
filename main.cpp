@@ -9,14 +9,15 @@ extern "C" {
 #include <string>
 
 #define INTERVAL 0.5
+#define WAIT usleep(INTERVAL * 1e+6)
 
 xdo_t* xdo;
 bool discord_stopped = false;
 
 void atexit_handler() {
-    std::cout << "Sending SIGCONT to all Discord processes\n";
-    system("killall -18 Discord");
     if (xdo != NULL) {
+        std::cout << "Sending SIGCONT to all Discord processes\n";
+        system("killall -18 Discord");
         xdo_free(xdo);
     }
 }
@@ -36,19 +37,17 @@ int main() {
     signal(SIGINT, signal_handler);
     signal(SIGHUP, signal_handler);
 
-    for (;;) {
+    for (;;WAIT) {
         if (system("pidof -s Discord") == 0) {
             system("renice -n 20 --pid `pidof Discord`");
 
             Window active;
             xdo_get_active_window(xdo, &active);
             if (active == 0) {
-                usleep(INTERVAL * 1e+6);
                 continue;
             }
             int pid = xdo_get_pid_window(xdo, active);
             if (pid == 0) {
-                usleep(INTERVAL * 1e+6);
                 continue;
             }
 
@@ -72,8 +71,6 @@ int main() {
         } else if (discord_stopped) {
             discord_stopped = false;
         }
-
-        usleep(INTERVAL * 1e+6);
     }
 
     return 0;
