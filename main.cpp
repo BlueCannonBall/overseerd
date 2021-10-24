@@ -14,7 +14,7 @@ extern "C" {
 xdo_t* xdo;
 bool discord_stopped = false;
 
-int no_out_system(const std::string& command) {
+inline int no_out_system(const std::string& command) {
     return system((command + " > /dev/null").c_str());
 }
 
