@@ -14,10 +14,14 @@ extern "C" {
 xdo_t* xdo;
 bool discord_stopped = false;
 
+int no_out_system(const std::string& command) {
+    return system((command + " > /dev/null").c_str());
+}
+
 void atexit_handler() {
     if (xdo != NULL) {
         std::cout << "Sending SIGCONT to all Discord processes\n";
-        system("killall -18 Discord > /dev/null");
+        no_out_system("killall -18 Discord");
         xdo_free(xdo);
     }
 }
@@ -38,8 +42,8 @@ int main() {
     signal(SIGHUP, signal_handler);
 
     for (;; WAIT) {
-        if (system("pidof -s Discord > /dev/null") == 0) {
-            system("renice -n 20 --pid `pidof Discord` > /dev/null");
+        if (no_out_system("pidof -s Discord") == 0) {
+            no_out_system("renice -n 20 --pid `pidof Discord`");
 
             Window active;
             xdo_get_active_window(xdo, &active);
@@ -60,12 +64,12 @@ int main() {
             if (comm != "Discord") {
                 if (!discord_stopped) {
                     std::cout << "Sending SIGSTOP to all Discord processes\n";
-                    system("killall -19 Discord > /dev/null");
+                    no_out_system("killall -19 Discord");
                     discord_stopped = true;
                 }
             } else if (discord_stopped) {
                 std::cout << "Sending SIGCONT to all Discord processes\n";
-                system("killall -18 Discord > /dev/null");
+                no_out_system("killall -18 Discord");
                 discord_stopped = false;
             }
         } else if (discord_stopped) {
