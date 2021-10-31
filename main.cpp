@@ -46,6 +46,7 @@ int main() {
     for (;; WAIT) {
         if (no_out_system("pidof -s Discord") == 0) {
             no_out_system("renice -n 20 --pid `pidof Discord`");
+            no_out_system("ionice -c 3 -p `pidof Discord`");
 
             // Check if Discord window is open
             if (no_out_system("bash -c 'wmctrl -l | grep -o \"$HOSTNAME.*\" | sed \"s/$HOSTNAME //g\" | grep Discord'") == 0) {
