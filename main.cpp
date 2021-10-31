@@ -97,6 +97,4 @@ int main() {
             discord_window_open = false;
         }
     }
-
-    return 0;
 }
