@@ -13,6 +13,7 @@ extern "C" {
 
 xdo_t* xdo;
 bool discord_stopped = false;
+bool discord_window_open = false;
 
 inline int no_out_system(const std::string& command) {
     return system((command + " > /dev/null").c_str());
@@ -40,10 +41,28 @@ int main() {
     signal(SIGTERM, signal_handler);
     signal(SIGINT, signal_handler);
     signal(SIGHUP, signal_handler);
+    signal(SIGQUIT, signal_handler);
 
     for (;; WAIT) {
         if (no_out_system("pidof -s Discord") == 0) {
             no_out_system("renice -n 20 --pid `pidof Discord`");
+
+            // Check if Discord window is open
+            if (no_out_system("bash -c 'wmctrl -l | grep -o \"$HOSTNAME.*\" | sed \"s/$HOSTNAME //g\" | grep Discord'") == 0) {
+                if (!discord_window_open) {
+                    std::cout << "Discord window opened\n";
+                    discord_window_open = true;
+                }
+            } else {
+                if (discord_window_open) {
+                    std::cout << "Discord window closed\n";
+                    discord_window_open = false;
+                    std::cout << "Sending SIGCONT to all Discord processes\n";
+                    no_out_system("killall -18 Discord");
+                    discord_stopped = false;
+                }
+                continue;
+            }
 
             Window active;
             xdo_get_active_window(xdo, &active);
@@ -72,8 +91,9 @@ int main() {
                 no_out_system("killall -18 Discord");
                 discord_stopped = false;
             }
-        } else if (discord_stopped) {
+        } else {
             discord_stopped = false;
+            discord_window_open = false;
         }
     }
 
