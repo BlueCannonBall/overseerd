@@ -8,13 +8,13 @@ Many applications nowadays are made using inefficient frameworks and libraries s
 
 ## Build & Install
 
-```
+```sh
 $ make
 $ sudo make install
 ```
 
 ## Usage
 
-```
+```sh
 $ overseerd Discord # Freeze processes with the name Discord. If overseerd is working properly, nothing should be outputed to the console.
 ```
