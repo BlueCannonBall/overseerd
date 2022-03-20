@@ -1,6 +1,6 @@
 CXX = g++
 LIBS = -lX11
-override CXXFLAGS += -Wall -s -O2 -flto
+override CXXFLAGS += -Wall -s -Ofast -flto
 TARGET = overseerd
 PREFIX = /usr/local
 
