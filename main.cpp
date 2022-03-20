@@ -179,7 +179,7 @@ int main(int argc, char** argv) {
             }
         }
 
-        if (processes.size() != 0) {
+        if (!processes.empty()) {
             unsigned long windows_size;
             Window* windows = (Window*) get_property(dpy, root, XA_WINDOW, client_list_atom, &windows_size);
 
