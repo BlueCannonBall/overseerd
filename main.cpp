@@ -20,7 +20,7 @@
 #include <unordered_map>
 #include <vector>
 
-#define INTERVAL 500
+#define INTERVAL 250
 #define WAIT     std::this_thread::sleep_for(std::chrono::milliseconds(INTERVAL))
 
 #define MAX_PROPERTY_VALUE_LEN 4096
