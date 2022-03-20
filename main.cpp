@@ -200,10 +200,14 @@ int main(int argc, char** argv) {
 
             int send;
             if (window_open) {
-                pid_t pid = get_window_pid(dpy, *active_window);
+                if (*active_window != 0) {
+                    pid_t pid = get_window_pid(dpy, *active_window);
 
-                if (std::find(processes.begin(), processes.end(), pid) != processes.end()) {
-                    send = SIGCONT;
+                    if (std::find(processes.begin(), processes.end(), pid) != processes.end()) {
+                        send = SIGCONT;
+                    } else {
+                        send = SIGSTOP;
+                    }
                 } else {
                     send = SIGSTOP;
                 }
