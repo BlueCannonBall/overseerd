@@ -1,16 +1,20 @@
-# `discordd`
+# `overseerd`
 
-Freeze DiScOrD when you aren't using it.
+Freeze resource intensive apps when you aren't using them.
 
 ## Motivation
 
-DiScOrD is a shitty, inefficient, slow electron app constantly robbing your system resources, even when you aren't using it. This daemon solves this (at least on Linux) by "freezing" DiScOrD (using SIGSTOP) when its window isn't in focus.
+Many applications nowadays are made using inefficient frameworks and libraries such as Electron, slowing down the rest of your system even when you aren't actively using the apps. This Linux program solves this by freezing select apps when their windows aren't in focus.
 
 ## Build & Install
 
 ```
 $ make
-# make install
+$ sudo make install
 ```
-*Note that `discordd` depends on `libxdo`.*
-*Also note that `#` represents a root shell.*
+
+## Usage
+
+```
+$ overseerd Discord # Freeze processes with the name Discord. If overseerd is working properly, nothing should be outputed to the console.
+```

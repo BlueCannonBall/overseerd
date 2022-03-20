@@ -1,15 +1,16 @@
-CC = g++
-override CFLAGS += -Wall -Wno-unused-result -s -O2 -lX11 -lxdo
-TARGET = discordd
+CXX = g++
+LIBS = -lX11
+override CXXFLAGS += -Wall -s -O2 -flto
+TARGET = overseerd
 PREFIX = /usr/local
 
 $(TARGET): main.cpp
-	$(CC) $< $(CFLAGS) -o $@
+	$(CXX) $< $(CXXFLAGS) $(LIBS) -o $@
 
 .PHONY: clean install
 
 clean:
-	rm -f $(TARGET)
+	$(RM) $(TARGET)
 
 install:
 	cp $(TARGET) $(PREFIX)/bin/$(TARGET)
