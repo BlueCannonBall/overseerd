@@ -57,7 +57,11 @@ bool is_number(const char* s) {
 
 inline std::string slurp(const std::string& path) {
     std::ifstream file(path);
-    return std::string(std::istreambuf_iterator<char> {file}, {});
+    if (file.is_open()) {
+        return std::string(std::istreambuf_iterator<char> {file}, {});
+    } else {
+        return std::string();
+    }
 }
 
 unsigned char* get_property(Display* dpy, Window window, Atom prop_type, Atom prop, unsigned long* size) {
