@@ -60,7 +60,7 @@ inline std::string slurp(const std::string& path) {
     if (file.is_open()) {
         return std::string(std::istreambuf_iterator<char> {file}, {});
     } else {
-        std::cerr << "Error slurping file \"" << path << "\": " << strerror(errno) << std::endl;
+        std::cerr << "Error slurping up file \"" << path << "\": " << strerror(errno) << std::endl;
         return std::string();
     }
 }
