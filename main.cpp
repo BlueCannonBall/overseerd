@@ -58,7 +58,12 @@ bool is_number(const char* s) {
 inline std::string slurp(const std::string& path) {
     std::ifstream file(path);
     if (file.is_open()) {
-        return std::string(std::istreambuf_iterator<char> {file}, {});
+        try {
+            return std::string(std::istreambuf_iterator<char> {file}, {});
+        } catch (std::exception& e) {
+            std::cerr << "Error slurping up file \"" << path << "\": " << e.what() << std::endl;
+            return std::string();
+        }
     } else {
         std::cerr << "Error slurping up file \"" << path << "\": " << strerror(errno) << std::endl;
         return std::string();
