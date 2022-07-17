@@ -215,7 +215,7 @@ int main(int argc, char** argv) {
                 if (*active_window != 0) {
                     try {
                         pid_t pid = get_window_pid(dpy, *active_window);
-                        
+
                         if (std::find(processes.begin(), processes.end(), pid) != processes.end()) {
                             send = SIGCONT;
                         } else {
@@ -223,7 +223,7 @@ int main(int argc, char** argv) {
                         }
                     } catch (const std::exception& e) {
                         std::cerr << "Error: " << e.what() << std::endl;
-                        send = SIGCONT;
+                        send = SIGSTOP;
                     }
                 } else {
                     send = SIGSTOP;
