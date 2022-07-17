@@ -90,7 +90,9 @@ unsigned char* get_property(Display* dpy, Window window, Atom prop_type, Atom pr
         &bytes_after,
         &ret);
 
-    assert(type == prop_type);
+    if (prop_type != type) {
+        throw std::runtime_error("XGetWindowProperty returned different type");
+    }
 
     return ret;
 }
@@ -211,12 +213,17 @@ int main(int argc, char** argv) {
             int send;
             if (window_open) {
                 if (*active_window != 0) {
-                    pid_t pid = get_window_pid(dpy, *active_window);
-
-                    if (std::find(processes.begin(), processes.end(), pid) != processes.end()) {
+                    try {
+                        pid_t pid = get_window_pid(dpy, *active_window);
+                        
+                        if (std::find(processes.begin(), processes.end(), pid) != processes.end()) {
+                            send = SIGCONT;
+                        } else {
+                            send = SIGSTOP;
+                        }
+                    } catch (const std::exception& e) {
+                        std::cerr << "Error: " << e.what() << std::endl;
                         send = SIGCONT;
-                    } else {
-                        send = SIGSTOP;
                     }
                 } else {
                     send = SIGSTOP;
